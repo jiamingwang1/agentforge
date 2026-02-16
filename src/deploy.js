@@ -47,6 +47,36 @@ async function configWizard(agent, opts) {
   const env = {};
   const envVars = opts.envVars || {};
   
+  // Auto-generate passwords/defaults for known internal vars
+  if (agent.autoGenEnv) {
+    for (const [key, val] of Object.entries(agent.autoGenEnv)) {
+      if (envVars[key]) {
+        env[key] = envVars[key];
+      } else if (typeof val === 'number') {
+        // Generate random password of given length
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let pw = '';
+        for (let i = 0; i < val; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+        env[key] = pw;
+        console.log(`  ${key}: (auto-generated)`);
+      } else {
+        env[key] = val;
+        console.log(`  ${key}: ${val}`);
+      }
+    }
+  }
+
+  // Check all required envs first, report all missing at once
+  if (!interactive) {
+    const missing = agent.requiredEnv.filter(k => !envVars[k]);
+    if (missing.length > 0) {
+      console.error(`\n  ❌ Missing required environment variables:`);
+      for (const k of missing) console.error(`     --env-${k}=<value>`);
+      console.error(`\n  Example: agentforge deploy ${agentKey} ${missing.map(k => `--env-${k}=YOUR_VALUE`).join(' ')}`);
+      process.exit(1);
+    }
+  }
+
   for (const key of agent.requiredEnv) {
     if (envVars[key]) {
       env[key] = envVars[key];
@@ -55,9 +85,6 @@ async function configWizard(agent, opts) {
       const val = await ask(`  ${key}: `);
       if (!val) { console.error(`  ❌ ${key} is required`); process.exit(1); }
       env[key] = val;
-    } else {
-      console.error(`  ❌ ${key} is required. Use --env-${key}=value`);
-      process.exit(1);
     }
   }
 
@@ -71,6 +98,9 @@ async function configWizard(agent, opts) {
     }
   }
 
+  // Add port to env for templates that use ${PORT}
+  env.PORT = config.port;
+  
   config.env = env;
   return config;
 }
