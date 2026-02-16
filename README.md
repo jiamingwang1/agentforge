@@ -1,6 +1,10 @@
 # AgentForge 🔥
 
-**Deploy AI Agents in One Command**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/jiamingwang1/agentforge)](https://github.com/jiamingwang1/agentforge/stargazers)
+[![Agents](https://img.shields.io/badge/agents-5-blue)](https://github.com/jiamingwang1/agentforge#supported-ai-agents)
+
+**Deploy AI Agents with One Command**
 
 > We run 4 AI employees on our own infrastructure. Now you can too.
 
