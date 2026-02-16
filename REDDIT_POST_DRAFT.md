@@ -7,50 +7,64 @@ I built a CLI tool that deploys AI agents (OpenClaw, n8n, Dify) with one command
 
 Hey r/selfhosted 👋
 
-I've been self-hosting AI agents for clients and got tired of the repetitive Docker + reverse proxy + SSL setup every time. So I built **AgentForge** — a CLI tool that deploys AI agents with a single command.
+I've been deploying AI agents on VPS for clients and got tired of the repetitive Docker + reverse proxy + SSL + database setup every single time. So I built **AgentForge** — an open-source CLI that deploys AI agents with a single command.
 
-### What it does
+### How it works
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | sh
-agentforge deploy openclaw
+git clone https://github.com/jiamingwang1/agentforge.git
+cd agentforge && npm install
+node src/cli.js deploy openclaw
 ```
 
-That's it. It:
-- 🐳 Checks Docker (installs if missing)
-- 🔧 Walks you through config (API keys, domain)
-- 🔒 Sets up Caddy reverse proxy with automatic SSL (if you provide a domain)
-- 🚀 Spins up the full stack with `docker compose`
+Or non-interactive for scripts/CI:
+```bash
+agentforge deploy openclaw -y --env-ANTHROPIC_API_KEY=sk-xxx
+```
+
+Deploys in under 60 seconds on a fresh VPS (tested on Ubuntu 22.04/24.04). With cached images, it's under 1 second.
+
+It handles:
+- 🐳 Docker detection (installs if missing)
+- 🔧 Interactive config wizard for API keys and settings
+- 🔒 Caddy reverse proxy with automatic SSL (when you provide a domain)
+- 🚀 Full stack deploy with docker compose (app + DB + cache)
+- 📊 Health checks and auto-restart
 
 ### Supported agents
 
 | Agent | What it does |
 |-------|-------------|
 | **OpenClaw** | AI employee / personal assistant |
-| **n8n** | Workflow automation (like Zapier, self-hosted) |
+| **n8n** | Workflow automation (self-hosted Zapier) |
 | **Dify** | AI application platform |
 | **LobeChat** | AI chat application |
+| **CrewAI** | Multi-agent framework (coming soon) |
 
-### Why not just use Coolify/CapRover/Portainer?
+### CLI commands
 
-Those are general-purpose PaaS tools (and they're great). AgentForge is specifically for **AI agents** — it knows about API keys, model configs, and the specific stack each agent needs. Think of it as `npx create-react-app` but for AI agents.
+```
+agentforge deploy <agent>    # Deploy
+agentforge status            # Health check
+agentforge logs <agent>      # View logs  
+agentforge update <agent>    # Pull latest + restart
+agentforge backup <agent>    # Backup data + config
+agentforge stop <agent>      # Stop
+agentforge list              # Available agents
+```
 
-### What's next
+### Why not Coolify/CapRover/Portainer?
 
-- `agentforge update` — one-command updates ✅ (already done)
-- `agentforge backup` — backup agent data ✅ (already done)  
-- `agentforge status` — health dashboard ✅ (already done)
-- `--dry-run` mode for CI pipelines ✅ (already done)
-- More agents (CrewAI, AutoGPT) — in progress
-- Web management panel
+Those are general-purpose PaaS tools (and they're great). AgentForge is specifically for **AI agents** — it knows about API keys, model configs, vector databases, and the specific stack each agent needs. Think `npx create-react-app` but for AI agents.
 
 ### Links
 
-- GitHub: https://github.com/jiamingwang1/agentforge
-- It's open source, MIT licensed
+- **GitHub**: https://github.com/jiamingwang1/agentforge
+- **Landing page**: https://jiamingwang1.github.io/agentforge/
+- Open source, MIT licensed
 
-Would love feedback — what agents would you want supported? What's missing?
+**What AI agent do you wish had a one-click deploy?** We're adding more templates and would love to know what the community needs.
 
 ---
 
-*Built this over a weekend with my CTO. We're using it ourselves to deploy our own AI agents on VPS.*
+*Been building this for our own use deploying AI agents for clients. Decided to open source it.*
