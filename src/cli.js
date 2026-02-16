@@ -10,6 +10,10 @@ import { logs } from './logs.js';
 import { stop } from './stop.js';
 import { update } from './update.js';
 import { backup } from './backup.js';
+import { startDashboard } from './dashboard.js';
+import { healthCheck } from './health.js';
+import { doctor } from './doctor.js';
+import { startMonitor } from './monitor.js';
 import { list } from './registry.js';
 
 const HELP = `
@@ -23,6 +27,10 @@ Usage:
   agentforge update <agent>   Update agent to latest version
   agentforge backup <agent>   Backup agent data volumes
   agentforge list             List available agents
+  agentforge dashboard        Launch web management panel (Pro)
+  agentforge health [agent]   Run health check on all/specific agents
+  agentforge doctor           Diagnose environment (Docker, disk, ports)
+  agentforge monitor          Start background monitor (auto-restart + alerts)
   agentforge help             Show this help
 
 Options:
@@ -87,6 +95,18 @@ async function main() {
       break;
     case 'list':
       await list();
+      break;
+    case 'dashboard':
+      startDashboard(opts.port || 9090);
+      break;
+    case 'health':
+      await healthCheck(target, opts);
+      break;
+    case 'doctor':
+      await doctor();
+      break;
+    case 'monitor':
+      await startMonitor();
       break;
     case 'help':
     case '--help':
