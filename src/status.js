@@ -23,7 +23,7 @@ export async function status(agentKey) {
     for (const key of Object.keys(AGENTS)) {
       const dataDir = join(process.env.HOME, '.agentforge', key);
       try {
-        execSync(`cd ${dataDir} && docker compose ps -q 2>/dev/null`, { encoding: 'utf8' });
+        execSync(`cd "${dataDir}" 2>/dev/null && docker compose ps -q 2>/dev/null`, { encoding: 'utf8', shell: '/bin/bash', stdio: ['pipe', 'pipe', 'pipe'] });
         console.log(`  ✅ ${key}`);
       } catch {
         console.log(`  ⬚  ${key}`);
