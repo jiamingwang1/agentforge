@@ -68,11 +68,18 @@ function generateCompose(agentKey, agent, config) {
     tmpl = tmpl.replace(/^version:.*\n/m, '');
     tmpl = tmpl.replace(/\$\{PORT\}/g, config.port);
     if (config.domain) tmpl = tmpl.replace(/\$\{DOMAIN\}/g, config.domain);
-    // Remove Caddy service if no domain configured
+    // Remove Caddy service if no domain configured, expose port directly
     if (!config.domain) {
       tmpl = tmpl.replace(/\n  caddy:[\s\S]*?(?=\n  \w|\nvolumes:)/m, '\n');
       tmpl = tmpl.replace(/\n  caddy_data:.*$/gm, '');
       tmpl = tmpl.replace(/\n  caddy_config:.*$/gm, '');
+      // Add ports to main service if not present
+      if (!tmpl.match(/ports:/m) || tmpl.indexOf('ports:') > tmpl.indexOf('caddy')) {
+        const svcMatch = tmpl.match(new RegExp(`(  ${agentKey}:[\\s\\S]*?)(    networks:)`));
+        if (svcMatch) {
+          tmpl = tmpl.replace(svcMatch[0], `${svcMatch[1]}    ports:\n      - "${config.port}:${agent.defaultPort}"\n${svcMatch[2]}`);
+        }
+      }
     }
     return tmpl;
   }
