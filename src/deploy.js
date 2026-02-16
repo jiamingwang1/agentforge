@@ -29,13 +29,14 @@ function checkDocker() {
 
 async function configWizard(agent, opts) {
   const config = { port: opts.port || agent.defaultPort };
+  const interactive = !opts.noInteractive && process.stdin.isTTY;
   
   console.log(`\n🔧 Configuring ${agent.name}...\n`);
 
   if (opts.domain) {
     config.domain = opts.domain;
     config.ssl = opts.ssl !== false;
-  } else {
+  } else if (interactive) {
     const domain = await ask('  Domain for SSL (e.g. agent.example.com, press Enter to skip): ');
     if (domain) {
       config.domain = domain;
@@ -44,15 +45,30 @@ async function configWizard(agent, opts) {
   }
 
   const env = {};
+  const envVars = opts.envVars || {};
+  
   for (const key of agent.requiredEnv) {
-    const val = await ask(`  ${key}: `);
-    if (!val) { console.error(`  ❌ ${key} is required`); process.exit(1); }
-    env[key] = val;
+    if (envVars[key]) {
+      env[key] = envVars[key];
+      console.log(`  ${key}: ****`);
+    } else if (interactive) {
+      const val = await ask(`  ${key}: `);
+      if (!val) { console.error(`  ❌ ${key} is required`); process.exit(1); }
+      env[key] = val;
+    } else {
+      console.error(`  ❌ ${key} is required. Use --env-${key}=value`);
+      process.exit(1);
+    }
   }
 
   for (const key of agent.optionalEnv) {
-    const val = await ask(`  ${key} (optional, press Enter to skip): `);
-    if (val) env[key] = val;
+    if (envVars[key]) {
+      env[key] = envVars[key];
+      console.log(`  ${key}: ****`);
+    } else if (interactive) {
+      const val = await ask(`  ${key} (optional, press Enter to skip): `);
+      if (val) env[key] = val;
+    }
   }
 
   config.env = env;
@@ -68,18 +84,13 @@ function generateCompose(agentKey, agent, config) {
     tmpl = tmpl.replace(/^version:.*\n/m, '');
     tmpl = tmpl.replace(/\$\{PORT\}/g, config.port);
     if (config.domain) tmpl = tmpl.replace(/\$\{DOMAIN\}/g, config.domain);
-    // Remove Caddy service if no domain configured, expose port directly
+    // Remove Caddy service if no domain configured
     if (!config.domain) {
       tmpl = tmpl.replace(/\n  caddy:[\s\S]*?(?=\n  \w|\nvolumes:)/m, '\n');
       tmpl = tmpl.replace(/\n  caddy_data:.*$/gm, '');
       tmpl = tmpl.replace(/\n  caddy_config:.*$/gm, '');
-      // Add ports to main service if not present
-      if (!tmpl.match(/ports:/m) || tmpl.indexOf('ports:') > tmpl.indexOf('caddy')) {
-        const svcMatch = tmpl.match(new RegExp(`(  ${agentKey}:[\\s\\S]*?)(    networks:)`));
-        if (svcMatch) {
-          tmpl = tmpl.replace(svcMatch[0], `${svcMatch[1]}    ports:\n      - "${config.port}:${agent.defaultPort}"\n${svcMatch[2]}`);
-        }
-      }
+      // Remove empty volumes section
+      tmpl = tmpl.replace(/\nvolumes:\s*\n/m, '\n');
     }
     return tmpl;
   }

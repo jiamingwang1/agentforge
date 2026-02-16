@@ -46,6 +46,16 @@ async function main() {
     else if (args[i] === '--domain') opts.domain = args[++i];
     else if (args[i] === '--data') opts.dataDir = args[++i];
     else if (args[i] === '--no-ssl') opts.ssl = false;
+    else if (args[i] === '--no-interactive' || args[i] === '-y') opts.noInteractive = true;
+    else if (args[i].startsWith('--env-')) {
+      // --env-ANTHROPIC_API_KEY=sk-xxx
+      const kv = args[i].slice(6);
+      const eq = kv.indexOf('=');
+      if (eq > 0) {
+        opts.envVars = opts.envVars || {};
+        opts.envVars[kv.slice(0, eq)] = kv.slice(eq + 1);
+      }
+    }
   }
 
   switch (command) {
