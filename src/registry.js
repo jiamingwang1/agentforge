@@ -24,6 +24,7 @@ export const AGENTS = {
     env: 'templates/n8n/.env.template',
     requiredEnv: [],
     optionalEnv: ['N8N_BASIC_AUTH_USER', 'N8N_BASIC_AUTH_PASSWORD'],
+    autoGenEnv: { N8N_PASSWORD: 16, POSTGRES_PASSWORD: 24, N8N_USER: 'admin' },
     healthCheck: '/healthz',
     docs: 'https://docs.n8n.io',
   },
