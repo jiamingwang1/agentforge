@@ -12,7 +12,7 @@ I've been self-hosting AI agents for clients and got tired of the repetitive Doc
 ### What it does
 
 ```bash
-curl -fsSL https://agentforge.dev/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | sh
 agentforge deploy openclaw
 ```
 
@@ -37,9 +37,11 @@ Those are general-purpose PaaS tools (and they're great). AgentForge is specific
 
 ### What's next
 
-- `agentforge update` — one-command updates for deployed agents
-- `agentforge status` — health dashboard
-- More agents (CrewAI, AutoGPT)
+- `agentforge update` — one-command updates ✅ (already done)
+- `agentforge backup` — backup agent data ✅ (already done)  
+- `agentforge status` — health dashboard ✅ (already done)
+- `--dry-run` mode for CI pipelines ✅ (already done)
+- More agents (CrewAI, AutoGPT) — in progress
 - Web management panel
 
 ### Links
