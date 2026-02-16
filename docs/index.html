@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentForge — Deploy AI Agents with One Command</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d1117;color:#e6edf3;line-height:1.6}
+.hero{text-align:center;padding:80px 20px 60px;max-width:800px;margin:0 auto}
+h1{font-size:3em;margin-bottom:10px;background:linear-gradient(135deg,#ff6b35,#f7c948);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tagline{font-size:1.3em;color:#8b949e;margin-bottom:40px}
+.terminal{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:30px;text-align:left;max-width:600px;margin:0 auto 40px;font-family:'Fira Code',monospace;font-size:0.95em}
+.terminal .prompt{color:#8b949e}
+.terminal .cmd{color:#79c0ff}
+.terminal .output{color:#7ee787}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:800px;margin:0 auto 60px;padding:0 20px}
+.feature{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
+.feature h3{margin-bottom:8px;color:#f0f6fc}
+.feature p{color:#8b949e;font-size:0.9em}
+.agents{max-width:700px;margin:0 auto 60px;padding:0 20px}
+.agents table{width:100%;border-collapse:collapse}
+.agents th,.agents td{padding:12px;text-align:left;border-bottom:1px solid #21262d}
+.agents th{color:#8b949e;font-size:0.85em;text-transform:uppercase}
+.agents td{color:#e6edf3}
+.status{color:#3fb950}
+.cta{text-align:center;padding:40px 20px 80px}
+.btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#ff6b35,#e85d26);color:#fff;text-decoration:none;border-radius:8px;font-size:1.1em;font-weight:600;margin:0 10px}
+.btn.secondary{background:transparent;border:2px solid #30363d;color:#e6edf3}
+.btn:hover{opacity:0.9;transform:translateY(-1px)}
+footer{text-align:center;padding:20px;color:#484f58;font-size:0.85em}
+</style>
+</head>
+<body>
+<div class="hero">
+<h1>🔥 AgentForge</h1>
+<p class="tagline">Deploy AI Agents with One Command</p>
+<div class="terminal">
+<p><span class="prompt">$</span> <span class="cmd">curl -fsSL https://agentforge.dev/install.sh | bash</span></p>
+<p><span class="prompt">$</span> <span class="cmd">agentforge deploy openclaw</span></p>
+<br>
+<p><span class="output">🚀 AgentForge — Deploying OpenClaw</span></p>
+<p><span class="output">✅ Docker detected</span></p>
+<p><span class="output">🔧 Configuring OpenClaw...</span></p>
+<p><span class="output">🔒 Setting up SSL with Caddy...</span></p>
+<p><span class="output">✅ OpenClaw is running at https://your-domain.com</span></p>
+</div>
+</div>
+
+<div class="features">
+<div class="feature">
+<h3>🐳 Zero Config</h3>
+<p>Installs Docker if missing. Handles databases, caching, reverse proxy — all automatic.</p>
+</div>
+<div class="feature">
+<h3>🔒 Auto SSL</h3>
+<p>Caddy reverse proxy with Let's Encrypt. HTTPS in seconds, zero certificate management.</p>
+</div>
+<div class="feature">
+<h3>🔧 Smart Wizard</h3>
+<p>Interactive config walks you through API keys, domains, and settings. No YAML editing.</p>
+</div>
+<div class="feature">
+<h3>📊 Health Checks</h3>
+<p>Built-in monitoring, auto-restart on failure, and one-command log access.</p>
+</div>
+</div>
+
+<div class="agents">
+<h2 style="text-align:center;margin-bottom:20px">Supported AI Agents</h2>
+<table>
+<tr><th>Agent</th><th>What it does</th><th>Status</th></tr>
+<tr><td><strong>OpenClaw</strong></td><td>AI Employee / Personal Assistant</td><td class="status">🟢 Ready</td></tr>
+<tr><td><strong>n8n</strong></td><td>Workflow Automation (self-hosted Zapier)</td><td class="status">🟢 Ready</td></tr>
+<tr><td><strong>Dify</strong></td><td>AI Application Platform</td><td class="status">🟢 Ready</td></tr>
+<tr><td><strong>LobeChat</strong></td><td>AI Chat Application</td><td class="status">🟢 Ready</td></tr>
+</table>
+</div>
+
+<div class="cta">
+<a href="https://github.com/jiamingwang1/agentforge" class="btn">⭐ Star on GitHub</a>
+<a href="https://github.com/jiamingwang1/agentforge#quick-start" class="btn secondary">Get Started</a>
+</div>
+
+<footer>
+<p>Built by a team that runs 4 AI employees. We use AgentForge ourselves every day. 🐕</p>
+</footer>
+</body>
+</html>
