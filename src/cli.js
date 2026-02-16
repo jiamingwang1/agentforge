@@ -8,6 +8,7 @@ import { deploy } from './deploy.js';
 import { status } from './status.js';
 import { logs } from './logs.js';
 import { stop } from './stop.js';
+import { update } from './update.js';
 import { list } from './registry.js';
 
 const HELP = `
@@ -18,6 +19,7 @@ Usage:
   agentforge status [agent]   Show running agent status
   agentforge logs <agent>     Tail agent logs
   agentforge stop <agent>     Stop a running agent
+  agentforge update <agent>   Update agent to latest version
   agentforge list             List available agents
   agentforge help             Show this help
 
@@ -61,6 +63,10 @@ async function main() {
     case 'stop':
       if (!target) { console.error('Usage: agentforge stop <agent>'); process.exit(1); }
       await stop(target, opts);
+      break;
+    case 'update':
+      if (!target) { console.error('Usage: agentforge update <agent>'); process.exit(1); }
+      await update(target, opts);
       break;
     case 'list':
       await list();
