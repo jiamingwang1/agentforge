@@ -1,105 +1,110 @@
-# AgentForge 🚀
+# AgentForge 🔥
 
-**AI Agent一键部署平台 — Deploy AI Agents in One Command**
-
-> "We run 4 AI employees ourselves. Now you can too."
-
-## 问题
-
-部署AI Agent太复杂：
-- 选框架？OpenClaw vs n8n vs Dify vs AutoGPT？
-- 配依赖？向量DB、消息队列、API keys、SSL证书...
-- 维运维？升级、监控、日志、备份...
-
-大多数人在第一步就放弃了。
-
-## 解决方案
+**Deploy AI Agents with One Command**
 
 ```bash
-curl -fsSL https://agentforge.dev/install | sh
-agentforge deploy openclaw    # 部署OpenClaw AI员工
-agentforge deploy n8n         # 部署n8n自动化
-agentforge deploy dify        # 部署Dify AI应用
+curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | bash
+agentforge deploy openclaw
 ```
 
-一条命令，完整AI Agent栈就绪。包含所有依赖，自动SSL，开箱即用。
+That's it. Full AI agent stack — running in under 2 minutes.
 
-## 支持的AI Agent框架
+## Why AgentForge?
 
-| 框架 | 类型 | 状态 |
-|------|------|------|
-| OpenClaw | AI员工/助手 | 🟢 优先 |
-| n8n | 工作流自动化 | 🟡 计划中 |
-| Dify | AI应用平台 | 🟡 计划中 |
-| LobeChat | AI对话 | 🟡 计划中 |
-| AutoGPT | 自主Agent | 🟡 计划中 |
-| CrewAI | 多Agent协作 | 🟡 计划中 |
+Deploying AI agents sucks. You need Docker, reverse proxy, SSL, databases, API keys, health checks... Most people give up before they start.
 
-## 技术架构
+AgentForge handles all of it:
+- 🐳 **Auto Docker setup** — installs Docker if missing
+- 🔧 **Interactive config wizard** — walks you through API keys and settings
+- 🔒 **Automatic SSL** — Caddy reverse proxy with Let's Encrypt
+- 🚀 **One command deploy** — full stack with `docker compose`
+- 📊 **Health checks** — built-in monitoring and auto-restart
 
-```
-┌─────────────────────────────────────────┐
-│              AgentForge CLI            │
-├─────────────────────────────────────────┤
-│  Agent Registry   │  Config Engine      │
-│  (框架清单+版本)   │  (交互式配置向导)    │
-├─────────────────────────────────────────┤
-│  Docker Compose Generator               │
-│  (根据框架生成完整compose文件)            │
-├─────────────────────────────────────────┤
-│  Dependency Resolver                     │
-│  (向量DB/Redis/PostgreSQL/Caddy自动选配) │
-├─────────────────────────────────────────┤
-│  Deploy Engine                           │
-│  (Docker/Podman, 健康检查, 自动重启)     │
-├─────────────────────────────────────────┤
-│  管理面板 (可选)                          │
-│  (状态监控/日志/更新/备份)               │
-└─────────────────────────────────────────┘
+## Supported AI Agents
+
+| Agent | What it does | Status |
+|-------|-------------|--------|
+| **[OpenClaw](https://openclaw.ai)** | AI Employee / Personal Assistant | 🟢 Ready |
+| **[n8n](https://n8n.io)** | Workflow Automation (self-hosted Zapier) | 🟢 Ready |
+| **[Dify](https://dify.ai)** | AI Application Platform | 🟢 Ready |
+| **[LobeChat](https://lobehub.com)** | AI Chat Application | 🟢 Ready |
+
+## Quick Start
+
+### Install
+```bash
+curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | bash
 ```
 
-## 差异化
+### Deploy an agent
+```bash
+agentforge deploy openclaw     # AI employee
+agentforge deploy n8n          # Workflow automation
+agentforge deploy dify         # AI app platform
+agentforge deploy lobechat     # AI chat
+```
 
-| | AgentForge | Coolify/CapRover | 手动Docker |
+### Manage
+```bash
+agentforge list                # See available agents
+agentforge status              # Check running agents
+agentforge logs openclaw       # View logs
+agentforge stop openclaw       # Stop an agent
+```
+
+## How is this different from Coolify/CapRover?
+
+Those are **general-purpose PaaS** tools (and they're great!). AgentForge is built specifically for **AI agents**:
+
+| | AgentForge | Coolify/CapRover | Manual Docker |
 |---|---|---|---|
-| 目标 | AI Agent专用 | 通用PaaS | 啥都行 |
-| 学习曲线 | 1条命令 | 需理解PaaS | 需Docker知识 |
-| AI依赖 | 自动配 | 手动加 | 全手动 |
-| 模板 | AI框架专属 | 通用 | 无 |
-| 配置向导 | AI场景优化 | 通用 | 无 |
+| **Focus** | AI agents only | Any app | Anything |
+| **Learning curve** | 1 command | Understand PaaS | Docker expertise |
+| **AI dependencies** | Auto-configured | Manual | Manual |
+| **Templates** | AI-optimized | Generic | None |
 
-## 定价
+Think `npx create-react-app` but for AI agents.
 
-- **Free**: 1个Agent，社区支持
-- **Pro $19/月**: 5个Agent，自动更新，邮件支持
-- **Team $49/月**: 无限Agent，优先支持，自定义模板
+## Architecture
 
-## 路线图
+```
+AgentForge CLI
+├── Agent Registry      — curated list of AI agent templates
+├── Config Wizard       — interactive setup for API keys, domains
+├── Compose Generator   — generates docker-compose with all deps
+├── Deploy Engine       — runs containers, health checks
+└── Management          — status, logs, updates (coming soon)
+```
 
-### Phase 1 — CLI + OpenClaw (2周)
-- [ ] CLI工具 (install/deploy/status/logs/update)
-- [ ] OpenClaw一键部署模板
-- [ ] 自动SSL (Caddy)
-- [ ] 基础健康检查
+Each agent template includes:
+- `docker-compose.yml` — full stack (app + DB + cache + reverse proxy)
+- `.env.template` — all config options with descriptions
+- `Caddyfile.template` — automatic SSL reverse proxy
 
-### Phase 2 — 更多框架 (4周)
-- [ ] n8n / Dify / LobeChat 模板
-- [ ] 交互式配置向导
-- [ ] 管理Web面板
-- [ ] Discord通知
+## Roadmap
 
-### Phase 3 — 商业化 (6周)
-- [ ] 落地页 + 注册系统
-- [ ] 付费功能（自动备份、团队协作）
-- [ ] 文档站
-- [ ] Product Hunt发布
+- [x] CLI tool (`deploy`, `list`, `status`, `logs`, `stop`)
+- [x] 4 agent templates (OpenClaw, n8n, Dify, LobeChat)
+- [x] Automatic SSL with Caddy
+- [x] Interactive config wizard
+- [ ] `agentforge update` — one-command updates
+- [ ] Web management panel
+- [ ] More agents (CrewAI, AutoGPT, LangGraph)
+- [ ] Backup & restore
 
-## 团队
+## Contributing
 
-- **阿诺 (CTO)** — 架构设计、CLI开发
-- **雷霆** — 数据采集、市场验证
-- **小助 (CEO)** — 产品方向、商业化
+PRs welcome! To add a new agent template:
+
+1. Create `templates/<agent-name>/docker-compose.yml`
+2. Create `templates/<agent-name>/.env.template`
+3. Create `templates/<agent-name>/Caddyfile.template`
+4. Add entry to `src/registry.js`
+
+## License
+
+MIT
 
 ---
 
-*Built by a team of AI employees. We dogfood our own product.* 🐕
+*Built by a team that runs 4 AI employees. We use AgentForge ourselves every day.* 🐕
