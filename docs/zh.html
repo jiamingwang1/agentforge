@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentForge — 一条命令部署AI Agent</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#0d1117;color:#e6edf3;line-height:1.8}
+.hero{text-align:center;padding:60px 20px 40px;max-width:700px;margin:0 auto}
+h1{font-size:2.2em;margin-bottom:8px;background:linear-gradient(135deg,#ff6b35,#f7c948);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tagline{font-size:1.1em;color:#8b949e;margin-bottom:30px}
+.problem{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;max-width:600px;margin:0 auto 30px;text-align:left}
+.problem h2{color:#f85149;font-size:1.1em;margin-bottom:12px}
+.problem ul{list-style:none;padding:0}
+.problem li{padding:6px 0;color:#8b949e}
+.problem li::before{content:'😤 '}
+.solution{background:#0d1117;max-width:600px;margin:0 auto 30px;text-align:left;padding:0 20px}
+.solution h2{color:#3fb950;font-size:1.1em;margin-bottom:12px;text-align:center}
+.terminal{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:20px;font-family:'Fira Code',monospace;font-size:0.85em;margin-bottom:24px;overflow-x:auto}
+.terminal .cmd{color:#79c0ff}
+.terminal .output{color:#7ee787}
+.terminal .prompt{color:#8b949e}
+.agents{max-width:600px;margin:0 auto 30px;padding:0 20px}
+.agents h2{text-align:center;margin-bottom:16px;font-size:1.1em}
+.agent-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.agent-card .name{font-weight:600;font-size:1em}
+.agent-card .desc{color:#8b949e;font-size:0.85em}
+.agent-card .status{color:#3fb950;font-size:0.85em}
+.features{max-width:600px;margin:0 auto 30px;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.feat{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px}
+.feat h3{font-size:0.95em;margin-bottom:4px}
+.feat p{color:#8b949e;font-size:0.8em}
+.compare{max-width:600px;margin:0 auto 30px;padding:0 20px}
+.compare h2{text-align:center;margin-bottom:12px;font-size:1.1em}
+.compare table{width:100%;border-collapse:collapse;font-size:0.85em}
+.compare th,.compare td{padding:10px;text-align:center;border-bottom:1px solid #21262d}
+.compare th{color:#8b949e;font-size:0.8em}
+.highlight{color:#3fb950;font-weight:600}
+.cta{text-align:center;padding:30px 20px 60px}
+.btn{display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#ff6b35,#e85d26);color:#fff;text-decoration:none;border-radius:8px;font-size:1em;font-weight:600;margin:6px}
+.btn.secondary{background:transparent;border:2px solid #30363d;color:#e6edf3}
+.btn:hover{opacity:0.9}
+.pricing{max-width:600px;margin:0 auto 30px;padding:0 20px}
+.pricing h2{text-align:center;margin-bottom:16px;font-size:1.1em}
+.price-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.price-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+.price-card.popular{border-color:#ff6b35}
+.price-card h3{font-size:0.95em;margin-bottom:4px}
+.price-card .price{font-size:1.5em;font-weight:700;margin:8px 0}
+.price-card .price span{font-size:0.5em;color:#8b949e}
+.price-card ul{list-style:none;padding:0;font-size:0.8em;color:#8b949e}
+.price-card li{padding:3px 0}
+footer{text-align:center;padding:20px;color:#484f58;font-size:0.8em}
+@media(max-width:480px){
+  h1{font-size:1.8em}
+  .features{grid-template-columns:1fr}
+  .price-cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>🔥 AgentForge</h1>
+<p class="tagline">一条命令，部署你的AI Agent</p>
+</div>
+
+<div class="problem">
+<h2>😤 部署AI Agent有多痛苦？</h2>
+<ul>
+<li>Docker Compose配了半天还报错</li>
+<li>SSL证书、反向代理、域名配置搞不定</li>
+<li>数据库、Redis、环境变量一堆要配</li>
+<li>每换一个AI框架又要从头来</li>
+<li>大多数人在第一步就放弃了</li>
+</ul>
+</div>
+
+<div class="solution">
+<h2>✅ AgentForge：一条命令搞定</h2>
+<div class="terminal">
+<p><span class="prompt">$</span> <span class="cmd">curl -fsSL https://agentforge.dev/install.sh | sh</span></p>
+<p><span class="prompt">$</span> <span class="cmd">agentforge deploy openclaw</span></p>
+<br>
+<p><span class="output">🚀 AgentForge — 正在部署 OpenClaw</span></p>
+<p><span class="output">✅ Docker 已检测</span></p>
+<p><span class="output">🔧 配置中...</span></p>
+<p><span class="output">🔒 SSL证书自动配置完成</span></p>
+<p><span class="output">✅ OpenClaw 已启动！耗时 0.48 秒</span></p>
+</div>
+</div>
+
+<div class="agents">
+<h2>🤖 支持的AI Agent</h2>
+<div class="agent-card">
+<div><div class="name">OpenClaw</div><div class="desc">AI员工 / 个人助理</div></div>
+<div class="status">🟢 可用</div>
+</div>
+<div class="agent-card">
+<div><div class="name">n8n</div><div class="desc">工作流自动化（自托管版Zapier）</div></div>
+<div class="status">🟢 可用</div>
+</div>
+<div class="agent-card">
+<div><div class="name">Dify</div><div class="desc">AI应用开发平台</div></div>
+<div class="status">🟢 可用</div>
+</div>
+<div class="agent-card">
+<div><div class="name">LobeChat</div><div class="desc">AI对话应用</div></div>
+<div class="status">🟢 可用</div>
+</div>
+<div class="agent-card">
+<div><div class="name">CrewAI</div><div class="desc">多Agent协作框架</div></div>
+<div class="status">🟡 开发中</div>
+</div>
+</div>
+
+<div class="features">
+<div class="feat"><h3>🐳 零配置</h3><p>自动检测/安装Docker，数据库、缓存一键配好</p></div>
+<div class="feat"><h3>🔒 自动SSL</h3><p>Caddy反向代理+Let's Encrypt，HTTPS秒开</p></div>
+<div class="feat"><h3>🔧 智能向导</h3><p>交互式配置API密钥、域名，不用手写YAML</p></div>
+<div class="feat"><h3>📊 健康监控</h3><p>自动重启、日志查看、一键更新</p></div>
+<div class="feat"><h3>💾 数据备份</h3><p>一条命令备份所有Agent数据和配置</p></div>
+<div class="feat"><h3>🚀 CI友好</h3><p>支持 -y 非交互模式，脚本/CI流水线直接用</p></div>
+</div>
+
+<div class="compare">
+<h2>🆚 和其他工具有什么不同？</h2>
+<table>
+<tr><th></th><th>AgentForge</th><th>Coolify等PaaS</th><th>手动Docker</th></tr>
+<tr><td>定位</td><td class="highlight">AI Agent专用</td><td>通用平台</td><td>什么都行</td></tr>
+<tr><td>学习成本</td><td class="highlight">1条命令</td><td>需学PaaS</td><td>需Docker知识</td></tr>
+<tr><td>AI依赖</td><td class="highlight">自动配好</td><td>手动加</td><td>全手动</td></tr>
+<tr><td>部署速度</td><td class="highlight">0.5秒</td><td>分钟级</td><td>小时级</td></tr>
+</table>
+</div>
+
+<div class="pricing">
+<h2>💰 定价</h2>
+<div class="price-cards">
+<div class="price-card">
+<h3>Free</h3>
+<div class="price">$0</div>
+<ul><li>1个Agent</li><li>社区支持</li><li>基础功能</li></ul>
+</div>
+<div class="price-card popular">
+<h3>Pro</h3>
+<div class="price">$19<span>/月</span></div>
+<ul><li>5个Agent</li><li>自动更新</li><li>邮件支持</li></ul>
+</div>
+<div class="price-card">
+<h3>Team</h3>
+<div class="price">$49<span>/月</span></div>
+<ul><li>无限Agent</li><li>优先支持</li><li>自定义模板</li></ul>
+</div>
+</div>
+</div>
+
+<div class="cta">
+<a href="https://github.com/jiamingwang1/agentforge" class="btn">⭐ GitHub</a>
+<a href="index.html" class="btn secondary">English</a>
+</div>
+
+<footer>
+<p>我们自己运行4个AI员工，AgentForge是我们每天用的工具 🐕</p>
+<p style="margin-top:8px">© 2026 AgentForge | MIT License</p>
+</footer>
+
+</body>
+</html>
