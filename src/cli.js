@@ -9,6 +9,7 @@ import { status } from './status.js';
 import { logs } from './logs.js';
 import { stop } from './stop.js';
 import { update } from './update.js';
+import { backup } from './backup.js';
 import { list } from './registry.js';
 
 const HELP = `
@@ -20,6 +21,7 @@ Usage:
   agentforge logs <agent>     Tail agent logs
   agentforge stop <agent>     Stop a running agent
   agentforge update <agent>   Update agent to latest version
+  agentforge backup <agent>   Backup agent data volumes
   agentforge list             List available agents
   agentforge help             Show this help
 
@@ -78,6 +80,10 @@ async function main() {
     case 'update':
       if (!target) { console.error('Usage: agentforge update <agent>'); process.exit(1); }
       await update(target, opts);
+      break;
+    case 'backup':
+      if (!target) { console.error('Usage: agentforge backup <agent>'); process.exit(1); }
+      await backup(target, opts);
       break;
     case 'list':
       await list();
