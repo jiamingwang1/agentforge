@@ -2,7 +2,7 @@
 # AgentForge Installer — curl -fsSL https://agentforge.dev/install | sh
 set -e
 
-REPO="jiamingwang1/reddit-pain-radar"
+REPO="jiamingwang1/agentforge"
 INSTALL_DIR="/usr/local/lib/agentforge"
 BIN="/usr/local/bin/agentforge"
 
@@ -36,12 +36,12 @@ mkdir -p "$INSTALL_DIR"
 
 if command -v git >/dev/null 2>&1; then
   git clone --depth 1 "https://github.com/$REPO.git" /tmp/agentforge-install 2>/dev/null
-  cp -r /tmp/agentforge-install/agentforge/* "$INSTALL_DIR/"
+  cp -r /tmp/agentforge-install/* "$INSTALL_DIR/"
   rm -rf /tmp/agentforge-install
 else
   curl -fsSL "https://github.com/$REPO/archive/main.tar.gz" | tar xz -C /tmp
-  cp -r /tmp/reddit-pain-radar-main/agentforge/* "$INSTALL_DIR/"
-  rm -rf /tmp/reddit-pain-radar-main
+  cp -r /tmp/agentforge-main/* "$INSTALL_DIR/"
+  rm -rf /tmp/agentforge-main
 fi
 
 # Install Node dependencies
