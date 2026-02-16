@@ -12,12 +12,11 @@ I've been deploying AI agents on VPS for clients and got tired of the repetitive
 ### How it works
 
 ```bash
-git clone https://github.com/jiamingwang1/agentforge.git
-cd agentforge && npm install
-node src/cli.js deploy openclaw
+curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | sh
+agentforge deploy openclaw
 ```
 
-Or non-interactive for scripts/CI:
+That's it. Two commands. Or fully non-interactive for scripts/CI:
 ```bash
 agentforge deploy openclaw -y --env-ANTHROPIC_API_KEY=sk-xxx
 ```
