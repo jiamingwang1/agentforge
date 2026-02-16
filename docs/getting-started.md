@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - **Linux** (Ubuntu 20.04+, Debian 11+, CentOS 8+) or **macOS**
-- **Docker** 20.10+ with Docker Compose v2
+- **Docker** 20.10+ with Docker Compose v2 (your user must be in the `docker` group — see Troubleshooting)
 - **Node.js** 18+
 - At least **2GB RAM** and **10GB disk** free
 
@@ -67,6 +67,41 @@ Each deployment creates a directory at `~/.agentforge/<agent>/` containing:
 ```
 
 All data is stored in Docker volumes. Use `agentforge backup` to save them.
+
+## Troubleshooting
+
+### Permission denied on Docker
+
+If you see `permission denied` errors:
+
+```bash
+# Add your user to the docker group
+sudo usermod -aG docker $USER
+# Log out and back in, or run:
+newgrp docker
+```
+
+### Port already in use
+
+```bash
+# Check what's using the port
+sudo lsof -i :3000
+# Deploy with a different port
+agentforge deploy openclaw --port 3001
+```
+
+### Containers won't start
+
+```bash
+# Run the environment check
+agentforge doctor
+# Check logs for errors
+agentforge logs openclaw
+```
+
+### Slow downloads / timeouts
+
+Docker image pulls can be slow on first deploy. If they timeout, just run `agentforge deploy` again — Docker resumes where it left off.
 
 ## Next Steps
 

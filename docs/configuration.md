@@ -85,4 +85,23 @@ Default ports for each agent:
 | LobeChat | 3210 |
 | Dashboard | 9090 |
 
+**⚠️ Port conflict:** OpenClaw and Dify both default to port 3000. If deploying both, use `--port` to change one:
+
+```bash
+agentforge deploy dify --port 3100
+```
+
 Override with `--port <port>` during deploy.
+
+## Backup Storage
+
+Backups are saved to `~/.agentforge/backups/`:
+
+```
+~/.agentforge/backups/
+├── openclaw-2026-02-16T12-00-00.tar.gz
+├── n8n-2026-02-15T08-30-00.tar.gz
+└── ...
+```
+
+Each backup includes Docker volume data, compose files, and environment config. Use `agentforge restore` to recover from any backup.

@@ -108,17 +108,25 @@ Creates a `.tar.gz` archive at `~/.agentforge/backups/` containing:
    Size: 45M
 ```
 
-### Restore from backup
+---
+
+## agentforge restore \<agent\> \<backup-file\>
+
+Restore an agent from a backup archive.
 
 ```bash
 agentforge restore openclaw ~/.agentforge/backups/openclaw-2026-02-16T12-00-00.tar.gz
 ```
 
 **What it does:**
-1. Stops the agent
-2. Restores compose + env files
-3. Restores all volume data
+1. Stops the running agent (if any)
+2. Restores `docker-compose.yml`, `.env`, and `Caddyfile`
+3. Restores all Docker volume data
 4. Restarts the agent
+
+**⚠️ Warning:** This overwrites the current deployment. Back up first if you have unsaved changes.
+
+*Pro feature.*
 
 ---
 
