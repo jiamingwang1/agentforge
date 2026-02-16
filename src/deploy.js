@@ -113,11 +113,13 @@ function generateCompose(agentKey, agent, config) {
     if (config.domain) tmpl = tmpl.replace(/\$\{DOMAIN\}/g, config.domain);
     // Remove Caddy service if no domain configured
     if (!config.domain) {
+      // Remove caddy service block
       tmpl = tmpl.replace(/\n  caddy:[\s\S]*?(?=\n  \w|\nvolumes:)/m, '\n');
+      // Remove caddy-specific volume declarations (but keep the volumes: key)
       tmpl = tmpl.replace(/\n  caddy_data:.*$/gm, '');
       tmpl = tmpl.replace(/\n  caddy_config:.*$/gm, '');
-      // Remove empty volumes section
-      tmpl = tmpl.replace(/\nvolumes:\s*\n/m, '\n');
+      // Only remove volumes: section if truly empty (no other volumes)
+      tmpl = tmpl.replace(/\nvolumes:\s*$/m, '');
     }
     return tmpl;
   }
