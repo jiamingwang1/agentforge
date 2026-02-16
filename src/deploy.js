@@ -154,6 +154,13 @@ export async function deploy(agentKey, opts) {
     console.log(`✅ Generated Caddyfile (auto-SSL via Caddy)`);
   }
 
+  // Dry run mode
+  if (opts.dryRun) {
+    console.log(`\n🏜️  Dry run complete! Files generated in: ${dataDir}`);
+    console.log(`   To deploy: cd ${dataDir} && docker compose up -d\n`);
+    return;
+  }
+
   // Deploy
   console.log(`\n🐳 Starting ${agent.name}...`);
   try {
