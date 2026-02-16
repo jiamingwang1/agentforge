@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createInterface } from 'node:readline';
+import { randomBytes } from 'node:crypto';
 import { AGENTS } from './registry.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -47,18 +48,25 @@ async function configWizard(agent, opts) {
   const env = {};
   const envVars = opts.envVars || {};
   
+  // Collect all missing required vars before failing (better UX)
+  const missing = [];
   for (const key of agent.requiredEnv) {
     if (envVars[key]) {
       env[key] = envVars[key];
       console.log(`  ${key}: ****`);
     } else if (interactive) {
-      const val = await ask(`  ${key}: `);
-      if (!val) { console.error(`  ❌ ${key} is required`); process.exit(1); }
-      env[key] = val;
+      const val = await ask(`  ${key} (required): `);
+      if (!val) { missing.push(key); } else { env[key] = val; }
     } else {
-      console.error(`  ❌ ${key} is required. Use --env-${key}=value`);
-      process.exit(1);
+      missing.push(key);
     }
+  }
+  if (missing.length > 0) {
+    console.error(`\n  ❌ Missing required config: ${missing.join(', ')}`);
+    if (!interactive) {
+      console.error(`  Use flags: ${missing.map(k => `--env-${k}=<value>`).join(' ')}`);
+    }
+    process.exit(1);
   }
 
   for (const key of agent.optionalEnv) {
@@ -68,6 +76,25 @@ async function configWizard(agent, opts) {
     } else if (interactive) {
       const val = await ask(`  ${key} (optional, press Enter to skip): `);
       if (val) env[key] = val;
+    }
+  }
+
+  // Auto-generate passwords for services that need them
+  const autoGenKeys = ['POSTGRES_PASSWORD', 'N8N_PASSWORD', 'REDIS_PASSWORD', 'SECRET_KEY', 'MYSQL_PASSWORD'];
+  for (const key of autoGenKeys) {
+    if (!env[key] && !envVars[key]) {
+      // Check if the template actually uses this variable
+      const templatePath = join(ROOT, `templates/${agentKey}/docker-compose.yml`);
+      if (existsSync(templatePath)) {
+        const tmpl = readFileSync(templatePath, 'utf8');
+        if (tmpl.includes(`\${${key}}`)) {
+          const generated = randomBytes(16).toString('hex');
+          env[key] = generated;
+          console.log(`  ${key}: (auto-generated)`);
+        }
+      }
+    } else if (envVars[key]) {
+      env[key] = envVars[key];
     }
   }
 
@@ -142,8 +169,10 @@ export async function deploy(agentKey, opts) {
   writeFileSync(join(dataDir, 'docker-compose.yml'), compose);
   console.log(`✅ Generated docker-compose.yml`);
 
-  // Write .env
-  const envContent = Object.entries(config.env).map(([k, v]) => `${k}=${v}`).join('\n') + '\n';
+  // Write .env (include PORT and DOMAIN)
+  const envEntries = { PORT: config.port, ...config.env };
+  if (config.domain) envEntries.DOMAIN = config.domain;
+  const envContent = Object.entries(envEntries).map(([k, v]) => `${k}=${v}`).join('\n') + '\n';
   writeFileSync(join(dataDir, '.env'), envContent);
   console.log(`✅ Generated .env`);
 
