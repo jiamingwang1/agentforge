@@ -13,6 +13,7 @@ import { backup } from './backup.js';
 import { startDashboard } from './dashboard.js';
 import { healthCheck } from './health.js';
 import { doctor } from './doctor.js';
+import { startMonitor } from './monitor.js';
 import { list } from './registry.js';
 
 const HELP = `
@@ -29,6 +30,7 @@ Usage:
   agentforge dashboard        Launch web management panel (Pro)
   agentforge health [agent]   Run health check on all/specific agents
   agentforge doctor           Diagnose environment (Docker, disk, ports)
+  agentforge monitor          Start background monitor (auto-restart + alerts)
   agentforge help             Show this help
 
 Options:
@@ -102,6 +104,9 @@ async function main() {
       break;
     case 'doctor':
       await doctor();
+      break;
+    case 'monitor':
+      await startMonitor();
       break;
     case 'help':
     case '--help':
