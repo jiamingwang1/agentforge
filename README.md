@@ -1,110 +1,108 @@
 # AgentForge 🔥
 
-**Deploy AI Agents with One Command**
+**Deploy AI Agents in One Command**
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | bash
-agentforge deploy openclaw
-```
+> We run 4 AI employees on our own infrastructure. Now you can too.
 
-That's it. Full AI agent stack — running in under 2 minutes.
+## Quick Start
 
-## Why AgentForge?
+\`\`\`bash
+# Install
+curl -fsSL https://agentforge.dev/install | sh
 
-Deploying AI agents sucks. You need Docker, reverse proxy, SSL, databases, API keys, health checks... Most people give up before they start.
+# Deploy OpenClaw (AI assistant)
+$ agentforge deploy openclaw
+🚀 AgentForge — Deploying OpenClaw
 
-AgentForge handles all of it:
-- 🐳 **Auto Docker setup** — installs Docker if missing
-- 🔧 **Interactive config wizard** — walks you through API keys and settings
-- 🔒 **Automatic SSL** — Caddy reverse proxy with Let's Encrypt
-- 🚀 **One command deploy** — full stack with `docker compose`
-- 📊 **Health checks** — built-in monitoring and auto-restart
+✅ Docker detected
+🔧 Configuring OpenClaw...
+  Domain for SSL (press Enter to skip): 
+  ANTHROPIC_API_KEY: sk-ant-xxxxx
+
+✅ Generated docker-compose.yml
+✅ Generated .env
+🐳 Starting OpenClaw...
+
+✅ OpenClaw is running!
+   URL: http://localhost:3000
+   Data: ~/.agentforge/openclaw
+
+# Manage
+agentforge status openclaw    # check health
+agentforge logs openclaw      # view logs  
+agentforge update openclaw    # pull latest & restart
+agentforge stop openclaw      # shut down
+\`\`\`
+
+**That's it.** Full stack deployed in under 60 seconds.
 
 ## Supported AI Agents
 
 | Agent | What it does | Status |
 |-------|-------------|--------|
-| **[OpenClaw](https://openclaw.ai)** | AI Employee / Personal Assistant | 🟢 Ready |
-| **[n8n](https://n8n.io)** | Workflow Automation (self-hosted Zapier) | 🟢 Ready |
-| **[Dify](https://dify.ai)** | AI Application Platform | 🟢 Ready |
-| **[LobeChat](https://lobehub.com)** | AI Chat Application | 🟢 Ready |
+| **OpenClaw** | AI employees & assistants | ✅ Ready |
+| **n8n** | Workflow automation + AI | ✅ Ready |
+| **Dify** | AI app builder | ✅ Ready |
+| **LobeChat** | AI chat interface | ✅ Ready |
+| AutoGPT | Autonomous agents | 🔜 Coming |
+| CrewAI | Multi-agent teams | 🔜 Coming |
 
-## Quick Start
+## What You Get
 
-### Install
-```bash
-curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | bash
-```
+Each deploy includes **everything** — not just the app:
 
-### Deploy an agent
-```bash
-agentforge deploy openclaw     # AI employee
-agentforge deploy n8n          # Workflow automation
-agentforge deploy dify         # AI app platform
-agentforge deploy lobechat     # AI chat
-```
+- 🐳 Docker Compose with all dependencies (PostgreSQL, Redis, etc.)
+- 🔒 Auto-SSL via Caddy (when you provide a domain)
+- 📝 Interactive config wizard (API keys, passwords, ports)
+- 🔄 One-command updates (\`agentforge update\`)
+- 📊 Health checks & auto-restart
 
-### Manage
-```bash
-agentforge list                # See available agents
-agentforge status              # Check running agents
-agentforge logs openclaw       # View logs
-agentforge stop openclaw       # Stop an agent
-```
-
-## How is this different from Coolify/CapRover?
-
-Those are **general-purpose PaaS** tools (and they're great!). AgentForge is built specifically for **AI agents**:
+## Why Not Coolify / CapRover / Manual Docker?
 
 | | AgentForge | Coolify/CapRover | Manual Docker |
 |---|---|---|---|
-| **Focus** | AI agents only | Any app | Anything |
-| **Learning curve** | 1 command | Understand PaaS | Docker expertise |
-| **AI dependencies** | Auto-configured | Manual | Manual |
-| **Templates** | AI-optimized | Generic | None |
+| Focus | AI Agents only | General PaaS | Everything |
+| Setup | 1 command | Multi-step | Write your own |
+| AI deps | Auto-configured | Manual | Manual |
+| Templates | AI-optimized stacks | Generic | None |
+| Learning curve | Zero | Medium | High |
 
-Think `npx create-react-app` but for AI agents.
+We don't try to be everything. We do one thing: **deploy AI agents, fast.**
 
-## Architecture
+## Commands
 
-```
-AgentForge CLI
-├── Agent Registry      — curated list of AI agent templates
-├── Config Wizard       — interactive setup for API keys, domains
-├── Compose Generator   — generates docker-compose with all deps
-├── Deploy Engine       — runs containers, health checks
-└── Management          — status, logs, updates (coming soon)
-```
+\`\`\`
+agentforge deploy <agent>   # Deploy an agent
+agentforge status [agent]   # Check running agents
+agentforge logs <agent>     # Tail logs
+agentforge update <agent>   # Update to latest version
+agentforge stop <agent>     # Stop an agent
+agentforge list             # Show available agents
+\`\`\`
 
-Each agent template includes:
-- `docker-compose.yml` — full stack (app + DB + cache + reverse proxy)
-- `.env.template` — all config options with descriptions
-- `Caddyfile.template` — automatic SSL reverse proxy
+## Install
 
-## Roadmap
+\`\`\`bash
+# One-liner
+curl -fsSL https://agentforge.dev/install | sh
 
-- [x] CLI tool (`deploy`, `list`, `status`, `logs`, `stop`)
-- [x] 4 agent templates (OpenClaw, n8n, Dify, LobeChat)
-- [x] Automatic SSL with Caddy
-- [x] Interactive config wizard
-- [ ] `agentforge update` — one-command updates
-- [ ] Web management panel
-- [ ] More agents (CrewAI, AutoGPT, LangGraph)
-- [ ] Backup & restore
+# Or clone
+git clone https://github.com/jiamingwang1/agentforge.git
+cd agentforge && npm link
+\`\`\`
 
-## Contributing
+**Requirements:** Docker + Node.js 18+
 
-PRs welcome! To add a new agent template:
+## Pricing
 
-1. Create `templates/<agent-name>/docker-compose.yml`
-2. Create `templates/<agent-name>/.env.template`
-3. Create `templates/<agent-name>/Caddyfile.template`
-4. Add entry to `src/registry.js`
+- **Free** — 1 agent, community support
+- **Pro \$19/mo** — 5 agents, auto-updates, email support  
+- **Team \$49/mo** — Unlimited, priority support, custom templates
 
-## License
+## Built by AI, for AI
 
-MIT
+Our team literally runs on AI agents. We're our own first users. 🐕
 
 ---
 
-*Built by a team that runs 4 AI employees. We use AgentForge ourselves every day.* 🐕
+[GitHub](https://github.com/jiamingwang1/agentforge) · MIT License
