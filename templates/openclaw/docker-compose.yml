@@ -4,6 +4,8 @@ services:
     image: ghcr.io/openclaw/openclaw:latest
     container_name: openclaw
     restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
     volumes:
       - ./data:/root/.openclaw
     env_file:
