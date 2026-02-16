@@ -1,0 +1,19 @@
+services:
+  crewai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crewai
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    networks:
+      - agent-net
+
+networks:
+  agent-net:
+    driver: bridge
