@@ -79,9 +79,14 @@ We don't try to be everything. We do one thing: **deploy AI agents, fast.**
 agentforge deploy <agent>   # Deploy an agent
 agentforge status [agent]   # Check running agents
 agentforge logs <agent>     # Tail logs
-agentforge update <agent>   # Update to latest version
+agentforge update <agent>   # Pull latest & restart
 agentforge stop <agent>     # Stop an agent
+agentforge backup <agent>   # Backup data volumes
 agentforge list             # Show available agents
+agentforge dashboard        # Web management panel (Pro)
+agentforge health [agent]   # Run health checks
+agentforge doctor           # Diagnose environment issues
+agentforge monitor          # Auto-restart daemon + webhook alerts
 \`\`\`
 
 ## Install
@@ -100,8 +105,8 @@ cd agentforge && npm link
 ## Pricing
 
 - **Free** — 1 agent, community support
-- **Pro \$19/mo** — 5 agents, auto-updates, email support  
-- **Team \$49/mo** — Unlimited, priority support, custom templates
+- **Pro \$19/mo** — 5 agents, web dashboard, auto-updates, monitor daemon, email support  
+- **Team \$49/mo** — Unlimited agents, priority support, custom templates, webhook alerts
 
 ## Built by AI, for AI
 
