@@ -1,112 +1,121 @@
-# AgentForge 🔥
+<p align="center">
+  <img src="https://img.shields.io/badge/agents-5-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/deploy_time-<60s-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/config_files-0-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/license-MIT-brightgreen?style=for-the-badge" />
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/jiamingwang1/agentforge)](https://github.com/jiamingwang1/agentforge/stargazers)
-[![Agents](https://img.shields.io/badge/agents-5-blue)](https://github.com/jiamingwang1/agentforge#supported-ai-agents)
+# 🔥 AgentForge
 
-**Deploy AI Agents with One Command**
+**Deploy AI agents in seconds, not hours.**
 
-> We run 4 AI employees on our own infrastructure. Now you can too.
+Stop fighting with Docker configs, database setup, and reverse proxies. One command deploys a production-ready AI agent on your own server.
 
-## Quick Start
+```bash
+curl -fsSL https://raw.githubusercontent.com/jiamingwang1/agentforge/main/install.sh | sh
+agentforge deploy n8n
+# ✅ n8n running at http://localhost:5678 in 48 seconds
+```
 
-\`\`\`bash
-# Install
-curl -fsSL https://agentforge.dev/install | sh
+## The Problem
 
-# Deploy OpenClaw (AI assistant)
-$ agentforge deploy openclaw
-🚀 AgentForge — Deploying OpenClaw
+Deploying AI agents manually means:
+- 2-4 hours reading Docker docs
+- Debugging port conflicts & networking
+- Configuring databases, Redis, environment variables
+- Setting up reverse proxy & SSL
+- Different process for every agent
 
-✅ Docker detected
-🔧 Configuring OpenClaw...
-  Domain for SSL (press Enter to skip): 
-  ANTHROPIC_API_KEY: sk-ant-xxxxx
+**AgentForge reduces this to one command.**
 
-✅ Generated docker-compose.yml
-✅ Generated .env
-🐳 Starting OpenClaw...
+## Supported Agents
 
-✅ OpenClaw is running!
-   URL: http://localhost:3000
-   Data: ~/.agentforge/openclaw
+| Agent | Description | Command |
+|-------|-------------|---------|
+| 🦞 **OpenClaw** | AI Personal Assistant | `agentforge deploy openclaw` |
+| ⚡ **n8n** | Workflow Automation | `agentforge deploy n8n` |
+| 🤖 **Dify** | AI App Platform | `agentforge deploy dify` |
+| 💬 **LobeChat** | AI Chat Interface | `agentforge deploy lobechat` |
+| 🧠 **CrewAI** | Multi-Agent Framework | `agentforge deploy crewai` |
 
-# Manage
-agentforge status openclaw    # check health
-agentforge logs openclaw      # view logs  
-agentforge update openclaw    # pull latest & restart
-agentforge stop openclaw      # shut down
-\`\`\`
+## CLI Commands
 
-**That's it.** Full stack deployed in under 60 seconds.
+```
+agentforge deploy <agent>    Deploy an AI agent (interactive .env wizard)
+agentforge status [agent]    Show agent status & container health
+agentforge logs <agent>      Stream real-time container logs
+agentforge stop <agent>      Stop and remove an agent
+agentforge update <agent>    Pull latest images and restart
+agentforge backup <agent>    Full backup (config + volumes + data)
+agentforge restore <agent>   Restore from backup
+agentforge list              List all available agents
+agentforge dashboard         Launch Web management panel (Pro)
+agentforge health            Run health checks with optional webhook alerts
+agentforge doctor            Diagnose environment (Docker/ports/disk/memory)
+agentforge monitor           Background health monitor + auto-restart
+```
 
-## Supported AI Agents
+## Web Dashboard (Pro)
 
-| Agent | What it does | Status |
-|-------|-------------|--------|
-| **OpenClaw** | AI employees & assistants | ✅ Ready |
-| **n8n** | Workflow automation + AI | ✅ Ready |
-| **Dify** | AI app builder | ✅ Ready |
-| **LobeChat** | AI chat interface | ✅ Ready |
-| AutoGPT | Autonomous agents | 🔜 Coming |
-| CrewAI | Multi-agent teams | 🔜 Coming |
+Real-time monitoring of all your deployed agents from a single browser tab:
 
-## What You Get
+- 📊 System metrics — CPU, memory, disk, container count
+- 🟢 Agent status — running, stopped, error states  
+- 🎮 One-click controls — start, stop, restart
+- 📋 Live logs — tail container output in real-time
+- 🔐 Token authentication
+- 🔄 Auto-refresh every 15 seconds
 
-Each deploy includes **everything** — not just the app:
+```bash
+agentforge dashboard  # Launches at http://localhost:9090
+```
 
-- 🐳 Docker Compose with all dependencies (PostgreSQL, Redis, etc.)
-- 🔒 Auto-SSL via Caddy (when you provide a domain)
-- 📝 Interactive config wizard (API keys, passwords, ports)
-- 🔄 One-command updates (\`agentforge update\`)
-- 📊 Health checks & auto-restart
+## How It Works
 
-## Why Not Coolify / CapRover / Manual Docker?
+1. **Install** — One curl command, no dependencies beyond Docker
+2. **Deploy** — Choose an agent, answer a few questions (API keys, ports)
+3. **Done** — Agent is running with database, networking, health checks configured
 
-| | AgentForge | Coolify/CapRover | Manual Docker |
-|---|---|---|---|
-| Focus | AI Agents only | General PaaS | Everything |
-| Setup | 1 command | Multi-step | Write your own |
-| AI deps | Auto-configured | Manual | Manual |
-| Templates | AI-optimized stacks | Generic | None |
-| Learning curve | Zero | Medium | High |
-
-We don't try to be everything. We do one thing: **deploy AI agents, fast.**
-
-## Commands
-
-\`\`\`
-agentforge deploy <agent>   # Deploy an agent
-agentforge status [agent]   # Check running agents
-agentforge logs <agent>     # Tail logs
-agentforge update <agent>   # Update to latest version
-agentforge stop <agent>     # Stop an agent
-agentforge list             # Show available agents
-\`\`\`
-
-## Install
-
-\`\`\`bash
-# One-liner
-curl -fsSL https://agentforge.dev/install | sh
-
-# Or clone
-git clone https://github.com/jiamingwang1/agentforge.git
-cd agentforge && npm link
-\`\`\`
-
-**Requirements:** Docker + Node.js 18+
+All data stays on YOUR server. AgentForge never phones home.
 
 ## Pricing
 
-- **Free** — 1 agent, community support
-- **Pro \$19/mo** — 5 agents, auto-updates, email support  
-- **Team \$49/mo** — Unlimited, priority support, custom templates
+| | Free | Pro ($19/mo) | Team ($49/mo) |
+|---|---|---|---|
+| CLI commands | ✅ All | ✅ All | ✅ All |
+| Deploy agents | ✅ Unlimited | ✅ Unlimited | ✅ Unlimited |
+| Backup & restore | ✅ | ✅ | ✅ |
+| Web Dashboard | ❌ | ✅ | ✅ |
+| Auto SSL (Caddy) | ❌ | ✅ | ✅ |
+| Health monitoring | ❌ | ✅ | ✅ |
+| Auto-restart | ❌ | ✅ | ✅ |
+| Multiple servers | ❌ | ❌ | ✅ |
+| Custom templates | ❌ | ❌ | ✅ |
+| Priority support | ❌ | ❌ | ✅ |
 
-## Built by AI, for AI
+## Requirements
 
-Our team literally runs on AI agents. We're our own first users. 🐕
+- Linux server (Ubuntu 20.04+, Debian 11+)
+- Docker & Docker Compose v2
+- 2GB+ RAM recommended
 
----
+## FAQ
 
-[GitHub](https://github.com/jiamingwang1/agentforge) · MIT License
+**How is this different from Coolify/CapRover?**  
+Those are general-purpose PaaS. AgentForge is purpose-built for AI agents — pre-configured templates with databases, ports, and health checks included. Zero config, one command.
+
+**Is my data safe?**  
+100% self-hosted. Everything runs on your server. No telemetry, no phone-home, no data collection.
+
+**Can I add my own agent templates?**  
+Yes! Add a `docker-compose.yml` and `.env.template` to the templates folder.
+
+## Links
+
+- 🌐 [Website](http://96.30.205.225:8082/)
+- 🏢 [XingDao](https://xingdao.pro)
+- 📦 [npm](https://www.npmjs.com/package/agentforge)
+
+## License
+
+MIT © [XingDao](https://xingdao.pro)
