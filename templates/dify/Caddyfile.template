@@ -1,0 +1,8 @@
+{DOMAIN} {
+    handle /api/* {
+        reverse_proxy dify-api:5001
+    }
+    handle {
+        reverse_proxy dify-web:3000
+    }
+}
