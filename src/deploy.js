@@ -27,7 +27,7 @@ function checkDocker() {
   }
 }
 
-async function configWizard(agent, opts) {
+async function configWizard(agentKey, agent, opts) {
   const config = { port: opts.port || agent.defaultPort };
   const interactive = !opts.noInteractive && process.stdin.isTTY;
   
@@ -161,7 +161,7 @@ export async function deploy(agentKey, opts) {
   console.log('✅ Docker detected');
 
   // Config wizard
-  const config = await configWizard(agent, opts);
+  const config = await configWizard(agentKey, agent, opts);
 
   // Create deploy dir
   const dataDir = opts.dataDir || join(process.env.HOME, '.agentforge', agentKey);
