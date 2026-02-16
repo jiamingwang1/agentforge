@@ -1,0 +1,15 @@
+{
+  "name": "agentforge",
+  "version": "0.1.0",
+  "description": "Deploy AI Agents in One Command",
+  "bin": {
+    "agentforge": "./src/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node tests/test.js"
+  },
+  "keywords": ["ai", "agent", "deploy", "docker", "openclaw"],
+  "license": "MIT"
+}
