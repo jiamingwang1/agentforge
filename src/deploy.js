@@ -28,7 +28,7 @@ function checkDocker() {
   }
 }
 
-async function configWizard(agent, opts) {
+async function configWizard(agentKey, agent, opts) {
   const config = { port: opts.port || agent.defaultPort };
   const interactive = !opts.noInteractive && process.stdin.isTTY;
   
@@ -113,11 +113,15 @@ function generateCompose(agentKey, agent, config) {
     if (config.domain) tmpl = tmpl.replace(/\$\{DOMAIN\}/g, config.domain);
     // Remove Caddy service if no domain configured
     if (!config.domain) {
-      tmpl = tmpl.replace(/\n  caddy:[\s\S]*?(?=\n  \w|\nvolumes:)/m, '\n');
+      // Remove caddy service block (everything from "  caddy:" to the next top-level service or section)
+      tmpl = tmpl.replace(/\n  caddy:[\s\S]*?(?=\n  [a-z]|\nvolumes:|\nnetworks:|\n$)/m, '\n');
+      // Remove caddy volume entries but keep the volumes: header and other volumes
       tmpl = tmpl.replace(/\n  caddy_data:.*$/gm, '');
       tmpl = tmpl.replace(/\n  caddy_config:.*$/gm, '');
-      // Remove empty volumes section
-      tmpl = tmpl.replace(/\nvolumes:\s*\n/m, '\n');
+      // Only remove volumes: section if it's truly empty (no entries left)
+      tmpl = tmpl.replace(/\nvolumes:\s*\n(\n|$)/m, '\n');
+      // Clean up multiple blank lines
+      tmpl = tmpl.replace(/\n{3,}/g, '\n\n');
     }
     return tmpl;
   }
@@ -158,7 +162,7 @@ export async function deploy(agentKey, opts) {
   console.log('✅ Docker detected');
 
   // Config wizard
-  const config = await configWizard(agent, opts);
+  const config = await configWizard(agentKey, agent, opts);
 
   // Create deploy dir
   const dataDir = opts.dataDir || join(process.env.HOME, '.agentforge', agentKey);
